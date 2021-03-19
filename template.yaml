@@ -33,12 +33,13 @@ Parameters:
     Default: prod
   CognitoDomainName:
     Type: String
-    Default: mytodoappdemo
+    Default: mybudget
 
   # For Amplify Console frontend hosting
   Repository:
     Type: String
     Description: GitHub Repository URL
+    Default: git@github.com:Iviglious/mybudget.git
   Branch:
     Type: String
     Description: GitHub Branch

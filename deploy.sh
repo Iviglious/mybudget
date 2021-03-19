@@ -5,6 +5,7 @@ set -x
 
 sam build --use-container
 sam deploy --guided --stack-name $STACK_NAME
+#sam deploy --config-file samconfig.toml --stack-name $STACK_NAME
 
 export AWS_COGNITO_REGION=$AWS_DEFAULT_REGION
 export AWS_USER_POOLS_WEB_CLIENT_ID=`aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='CognitoClientID'].OutputValue" --output text`
