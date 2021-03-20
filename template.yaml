@@ -39,7 +39,7 @@ Parameters:
   Repository:
     Type: String
     Description: GitHub Repository URL
-    Default: git@github.com:Iviglious/mybudget.git
+    Default: https://github.com/Iviglious/mybudget
   Branch:
     Type: String
     Description: GitHub Branch
