@@ -42,7 +42,8 @@ You can use the provided [AWS SAM template](./template.yml) to launch a stack th
 
 In order for use the Amplify Console, you need to generate a personal access token.
 Once created, an access token should be stored in a safe place, as it may not be available to be seen the next time and may need to regenerate a new one again.
-In order to setup your access token, go to [New personal access page](https://github.com/settings/tokens/new) in GitHub.
+In order to setup your access token, go to [New personal access page](https://github.com/settings/tokens/new) in GitHub.  
+Add needed permissions: repo (all) and admin:repo_hook. See [here](https://docs.aws.amazon.com/codebuild/latest/userguide/access-tokens.html).  
 
 Note that you might need to enter your password in order to proceed.
 
