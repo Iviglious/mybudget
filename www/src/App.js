@@ -165,7 +165,7 @@ function App() {
                     color="primary"
                     className="mt-5 float-center"
                   >
-                    Log In
+                    Register / Log In
                   </Button>
                 )
               }
