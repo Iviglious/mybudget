@@ -149,24 +149,25 @@ function App() {
         <Jumbotron>
           <Row>
             <Col md="6" className="logo">
-              <h1>Home</h1>
+              <h1>MyBudget</h1>
               <p>Welcome to MyBudget</p>
-              <p>Here is a summary of your budget so far:</p>
-
-              <img src="favicon.png" alt="Logo" />
+              <p>The app which puts all your money together.</p>
             </Col>
             <Col md="6">
               {idToken.length > 0 ?
                 (
                   <ToDo updateAlert={updateAlert} toDos={toDos} addToDo={addToDo} deleteToDo={deleteToDo} completeToDo={completeToDo} />
                 ) : (
-                  <Button
-                    href={`https://${config.cognito_hosted_domain}/login?response_type=token&client_id=${config.aws_user_pools_web_client_id}&redirect_uri=${config.redirect_url}`}
-                    color="primary"
-                    className="mt-5 float-center"
-                  >
-                    Register / Log In
-                  </Button>
+                  <Container>
+                    <p>Before continuing, please log in or register:</p>
+                    <Button
+                      href={`https://${config.cognito_hosted_domain}/login?response_type=token&client_id=${config.aws_user_pools_web_client_id}&redirect_uri=${config.redirect_url}`}
+                      color="primary"
+                      className="mt-5 float-center"
+                    >
+                      Log In or Register
+                    </Button>
+                  </Container>
                 )
               }
             </Col>
