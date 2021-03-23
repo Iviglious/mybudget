@@ -158,8 +158,8 @@ function App() {
                 (
                   <ToDo updateAlert={updateAlert} toDos={toDos} addToDo={addToDo} deleteToDo={deleteToDo} completeToDo={completeToDo} />
                 ) : (
-                  <Container>
-                    <p>Before continuing, please log in or register:</p>
+                  //<Container>
+                    //<p>Before continuing, please log in or register:</p>
                     <Button
                       href={`https://${config.cognito_hosted_domain}/login?response_type=token&client_id=${config.aws_user_pools_web_client_id}&redirect_uri=${config.redirect_url}`}
                       color="primary"
@@ -167,7 +167,7 @@ function App() {
                     >
                       Log In or Register
                     </Button>
-                  </Container>
+                  //</Container>
                 )
               }
             </Col>
