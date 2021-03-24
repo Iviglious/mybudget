@@ -21,7 +21,14 @@ const docClient = new AWS.DynamoDB.DocumentClient(options)
 const response = (statusCode, body, additionalHeaders) => ({
     statusCode,
     body: JSON.stringify(body),
-    headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', ...additionalHeaders},
+    headers:
+    {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,GET',
+        ...additionalHeaders
+    },
 })
 
 // Get cognito username from claims
