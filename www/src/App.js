@@ -15,12 +15,36 @@ function App() {
   const [idToken, setIdToken] = useState('');
   const [toDos, setToDos] = useState([]);
 
+  function IsToken() {
+    return idToken.length > 0;
+  }
+
+  const getAllTodos = async () => {
+    const result = await axios({
+      url: `${config.api_base_url}/item/`,
+      headers: {
+        Authorization: idToken
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+
+    console.log(result);
+
+    if (result && result.status === 401) {
+      clearCredentials();
+    } else if (result && result.status === 200) {
+      console.log(result.data.Items);
+      setToDos(result.data.Items);
+    }
+  };
+
   useEffect(() => {
     getIdToken();
-    if (idToken.length > 0) {
+    if (IsToken()) {
       getAllTodos();
     }
-  }, [idToken]);
+  }, [idToken, IsToken]);
 
   axios.interceptors.response.use(response => {
     console.log('Response was received');
@@ -54,26 +78,6 @@ function App() {
         setIdToken(keyVal[1]);
       }
     });
-  };
-
-  const getAllTodos = async () => {
-    const result = await axios({
-      url: `${config.api_base_url}/item/`,
-      headers: {
-        Authorization: idToken
-      }
-    }).catch(error => {
-      console.log(error);
-    });
-
-    console.log(result);
-
-    if (result && result.status === 401) {
-      clearCredentials();
-    } else if (result && result.status === 200) {
-      console.log(result.data.Items);
-      setToDos(result.data.Items);
-    }
   };
 
   const addToDo = async (event) => {
@@ -154,7 +158,7 @@ function App() {
               <p>The app which puts all your money together.</p>
             </Col>
             <Col md="6">
-              {idToken.length > 0 ?
+              {IsToken() ?
                 (
                   <ToDo updateAlert={updateAlert} toDos={toDos} addToDo={addToDo} deleteToDo={deleteToDo} completeToDo={completeToDo} />
                 ) : (
