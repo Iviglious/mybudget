@@ -15,11 +15,8 @@ function App() {
   const [idToken, setIdToken] = useState('');
   const [toDos, setToDos] = useState([]);
 
-  function IsToken() {
-    return idToken.length > 0;
-  }
-
   const getAllTodos = async () => {
+    
     const result = await axios({
       url: `${config.api_base_url}/item/`,
       headers: {
@@ -41,10 +38,10 @@ function App() {
 
   useEffect(() => {
     getIdToken();
-    if (IsToken()) {
+    if (idToken.length > 0) {
       getAllTodos();
     }
-  }, [idToken, IsToken]);
+  }, [idToken]);
 
   axios.interceptors.response.use(response => {
     console.log('Response was received');
@@ -158,7 +155,7 @@ function App() {
               <p>The app which puts all your money together.</p>
             </Col>
             <Col md="6">
-              {IsToken() ?
+              {idToken.length > 0 ?
                 (
                   <ToDo updateAlert={updateAlert} toDos={toDos} addToDo={addToDo} deleteToDo={deleteToDo} completeToDo={completeToDo} />
                 ) : (
