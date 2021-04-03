@@ -58,7 +58,7 @@ function getRecordById(username, recordId) {
 exports.getToDoItem =
     metricScope(metrics =>
         async (event, context, callback) => {
-            metrics.setNamespace('TodoApp')
+            metrics.setNamespace('MyBudgetApp')
             metrics.putDimensions({ Service: "getTodo" })
             metrics.setProperty("RequestId", context.requestId)
             if (!isValidRequest(context, event)) {

@@ -59,7 +59,7 @@ function updateRecord(username, recordId) {
 exports.completeToDoItem =
     metricScope(metrics =>
         async (event, context, callback) => {
-            metrics.setNamespace('TodoApp')
+            metrics.setNamespace('MyBudgetApp')
             metrics.putDimensions({ Service: "completeTodo" })
             metrics.setProperty("RequestId", context.requestId)
 

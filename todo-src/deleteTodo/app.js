@@ -58,7 +58,7 @@ function deleteRecordById(username, recordId) {
 exports.deleteToDoItem =
     metricScope(metrics =>
         async (event, context, callback) => {
-            metrics.setNamespace('TodoApp')
+            metrics.setNamespace('MyBudgetApp')
             metrics.putDimensions({ Service: "deleteTodo" })
             metrics.setProperty("RequestId", context.requestId)
 

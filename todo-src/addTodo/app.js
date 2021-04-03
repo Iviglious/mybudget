@@ -72,7 +72,7 @@ function addRecord(event) {
 exports.addToDoItem =
     metricScope(metrics =>
         async (event, context, callback) => {
-            metrics.setNamespace('TodoApp')
+            metrics.setNamespace('MyBudgetApp')
             metrics.putDimensions({ Service: "addTodo" })
             metrics.setProperty("RequestId", context.requestId)
 
