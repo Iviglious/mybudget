@@ -90,6 +90,28 @@ Resources:
       UserPoolId: !Ref MyBudgetUserPool
 
   # DynamoDB tables
+  TransactionTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Join ['_', [!Ref AWS::StackName, transaction]]
+      KeySchema:
+          - AttributeName: cognito_user_id
+            KeyType: HASH
+          - AttributeName: transaction_id
+            KeyType: RANGE
+      AttributeDefinitions:
+          - AttributeName: cognito_user_id
+            AttributeType: S
+          - AttributeName: transaction_id
+            AttributeType: S
+      ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5                  
+      SSESpecification:
+        SSEEnabled: true
+
+
+  # Old tables      
   TodoTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -110,25 +132,7 @@ Resources:
       SSESpecification:
         SSEEnabled: true
 
-  TransactionsTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: !Join ['-', [!Ref AWS::StackName, transactions]]
-      KeySchema:
-          - AttributeName: cognito-userid
-            KeyType: HASH
-          - AttributeName: id
-            KeyType: RANGE
-      AttributeDefinitions:
-          - AttributeName: cognito-userid
-            AttributeType: S
-          - AttributeName: id
-            AttributeType: S
-      ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5                  
-      SSESpecification:
-        SSEEnabled: true
+  
 
   # API declaration
   MyBudgetApi:
@@ -156,6 +160,64 @@ Resources:
             UserPoolArn: !GetAtt "MyBudgetUserPool.Arn"
 
   # API Functions
+  # Transactions
+  GetAllTransactionsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda/transactions/getAllTransactions
+      Handler: app.getAllTransactions
+      Tracing: Active
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref TransactionTable
+        - CloudWatchPutMetricPolicy: {}
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TransactionTable
+          AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+          ENDPOINT_OVERRIDE: ""
+
+      Events:
+        GetItem:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /transaction
+            Method: get
+            RestApiId: !Ref MyBudgetApi
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  AddTransactionFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda/transactions/addTransaction/
+      Handler: app.addTransaction
+      Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TransactionTable
+        - CloudWatchPutMetricPolicy: {}
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TransactionTable
+          AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+          ENDPOINT_OVERRIDE: ""
+
+      Events:
+        PutItem:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /transaction
+            Method: POST
+            RestApiId: !Ref MyBudgetApi
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+
+
+
+
+  # Old Todo functions
   GetTodoFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
